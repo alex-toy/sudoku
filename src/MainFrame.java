@@ -21,18 +21,13 @@ public class MainFrame extends JFrame {
 		
 		toolbar = new Toolbar();
 		textPanel = new TextPanel();
+		toolbar.setTextPanel(textPanel);
+		
 		btn = new JButton("click me");
-		btn.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				textPanel.appendText("hello\n");
-				
-			}});
+		
 		
 		add(toolbar, BorderLayout.NORTH);
 		add(textPanel, BorderLayout.CENTER);
-		add(btn, BorderLayout.SOUTH);
 		
 		JFrame frame = new JFrame("hello world");
 		setSize(600, 500);
