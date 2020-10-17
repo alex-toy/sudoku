@@ -2,6 +2,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -10,10 +11,10 @@ public class Toolbar extends JPanel implements ActionListener {
 	private JButton helloButton;
 	private JButton goodbyeButton;
 	
-	//private TextPanel textPanel;
 	private StringListener textListener;
 	
 	public Toolbar() {
+		setBorder(BorderFactory.createEtchedBorder());
 		helloButton = new JButton("hello");
 		helloButton.addActionListener(this);
 		add(helloButton);
@@ -28,10 +29,6 @@ public class Toolbar extends JPanel implements ActionListener {
 		
 	}
 
-	//public void setTextPanel(TextPanel textPanel) {
-		//this.textPanel = textPanel;
-	//}
-	
 	public void setStringListener(StringListener listener) {
 		this.textListener = listener;
 	}
