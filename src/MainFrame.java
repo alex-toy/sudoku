@@ -28,7 +28,7 @@ public class MainFrame extends JFrame {
 		setLayout(new BorderLayout());
 		
 		fileChooser = new JFileChooser();
-		fileChooser.addChoosableFileFilter(null);
+		fileChooser.addChoosableFileFilter(new PersonFileFilter());
 		
 		formPanel = new FormPanel();
 		toolbar = new Toolbar();
