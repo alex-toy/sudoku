@@ -23,6 +23,10 @@ import javax.swing.border.Border;
 
 public class FormPanel extends JPanel {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1249778354605130689L;
 	private JLabel nameLabel;
 	private JLabel occupationLabel;
 	private JTextField nameField;
@@ -54,9 +58,9 @@ public class FormPanel extends JPanel {
 		
 		ageList = new JList();
 		DefaultListModel ageModel = new DefaultListModel();
-		ageModel.addElement(new AgeCategory(1, "under 18"));
-		ageModel.addElement(new AgeCategory(2, "18 to 65"));
-		ageModel.addElement(new AgeCategory(3, "65 over"));
+		ageModel.addElement(new AgeCategory(0, "under 18"));
+		ageModel.addElement(new AgeCategory(1, "18 to 65"));
+		ageModel.addElement(new AgeCategory(2, "65 over"));
 		ageList.setModel(ageModel);
 		ageList.setPreferredSize(new Dimension(110, 66));
 		ageList.setBorder(BorderFactory.createEtchedBorder());

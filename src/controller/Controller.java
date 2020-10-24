@@ -1,7 +1,10 @@
 package controller;
 
 
-import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
+//import java.util.ArrayList;
+import java.util.List;
 
 import gui.FormEvent;
 import model.AgeCategory;
@@ -14,8 +17,12 @@ public class Controller {
 	
 	Database db = new Database();
 	
-	public ArrayList<Person> getPeople() {
+	public List<Person> getPeople() {
 		return db.getPeople();
+	}
+	
+	public void removePerson(int index) {
+		db.removePerson(index);
 	}
 	
 	public void addPerson(FormEvent e) {
@@ -42,7 +49,7 @@ public class Controller {
 		else { empCategory = EmploymentCategory.other; System.err.println(empCat); }
 		
 		Gender genderCat = null;
-		if(empCat.equals("male")) { genderCat = Gender.male; }
+		if(gender.equals("male")) { genderCat = Gender.male; }
 		else if(empCat.equals("female")) { genderCat = Gender.female; }
 		
 		
@@ -50,6 +57,14 @@ public class Controller {
 		
 		db.addPerson(person);
 		
+	}
+	
+	public void saveToFile(File file) throws IOException {
+		db.saveToFile(file);
+	}
+	
+	public void loadFromFile(File file) throws IOException {
+		db.loadFromFile(file);
 	}
 
 }

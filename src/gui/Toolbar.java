@@ -9,6 +9,10 @@ import javax.swing.JPanel;
 
 public class Toolbar extends JPanel implements ActionListener {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JButton helloButton;
 	private JButton goodbyeButton;
 	

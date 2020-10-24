@@ -1,6 +1,7 @@
 package gui;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -8,20 +9,29 @@ import model.Person;
 
 public class PersonTableModel extends AbstractTableModel {
 	
-	public ArrayList<Person> db;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private List<Person> db;
+	private String[] colNames = {"id", "names", "occupation", "age cat", "emp cat", "us citizen", "tax id"};
 
 	public PersonTableModel() {}
+		
 	
-	
-	
-	public void setData(ArrayList<Person> db) {
+	@Override
+	public String getColumnName(int column) {
+		return colNames[column];
+	}
+
+
+	public void setData(List<Person> db) {
 		this.db = db;
 	}
 
 	@Override
 	public int getColumnCount() {
-		// TODO Auto-generated method stub
-		return 0;
+		return 7;
 	}
 
 	@Override
