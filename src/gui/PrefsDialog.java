@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -19,6 +20,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.border.Border;
 
 public class PrefsDialog extends JDialog {
 	
@@ -40,7 +42,7 @@ public class PrefsDialog extends JDialog {
 		
 		layoutControls();
 		
-		setSize(400, 300);
+		setSize(350, 250);
 		setLocationRelativeTo(parent);
 	}
 	
@@ -59,12 +61,12 @@ public class PrefsDialog extends JDialog {
 	private void layoutControls() {
 		
 		JPanel controlsPanel = new JPanel();
+		Border titleBorder = BorderFactory.createTitledBorder("Database preferences");
+		Border spaceBorder = BorderFactory.createEmptyBorder(15, 15, 15, 15);
+		controlsPanel.setBorder(BorderFactory.createCompoundBorder(spaceBorder, titleBorder));
 		controlsPanel.setLayout(new GridBagLayout());
-		controlsPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		
-		JPanel buttonPanel = new JPanel();
-		buttonPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		
+				
 		GridBagConstraints gc = new GridBagConstraints();
 		
 		gc.gridx = 0;
@@ -73,37 +75,48 @@ public class PrefsDialog extends JDialog {
 		gc.weighty = 1;
 		gc.fill = GridBagConstraints.NONE;
 		
+		
 		///First row//////////////////////////////////////////////////////
+		gc.anchor = GridBagConstraints.EAST;
+		gc.insets = new Insets(0, 0, 0, 15);
 		controlsPanel.add(new JLabel("User : "), gc);
 		//second column
 		gc.gridx++;
 		userField = new JTextField(10);
+		gc.anchor = GridBagConstraints.WEST;
 		controlsPanel.add(userField, gc);
 		
 		
 		///next row//////////////////////////////////////////////////////
 		gc.gridy++;
 		gc.gridx = 0;
+		gc.anchor = GridBagConstraints.EAST;
 		controlsPanel.add(new JLabel("Password : "), gc);
 		//second column
 		gc.gridx++;
 		passField = new JPasswordField(10);
 		passField.setEchoChar('*');
+		gc.anchor = GridBagConstraints.WEST;
 		controlsPanel.add(passField, gc);
 				
 				
 		///Next row//////////////////////////////////////////////////////
 		gc.gridy++;
 		gc.gridx = 0;
+		gc.anchor = GridBagConstraints.EAST;
 		controlsPanel.add(new JLabel("Port : "), gc);
 		//second column
 		gc.gridx++;
 		spinnerModel = new SpinnerNumberModel(3306, 0, 9999, 1);
 		portSpinner = new JSpinner(spinnerModel);
+		gc.anchor = GridBagConstraints.WEST;
 		controlsPanel.add(portSpinner, gc);
 		
 		
 		///buttons panel//////////////////////////////////////////////////////
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		okButton = new JButton("ok");
 		okButton.addActionListener(new ActionListener() {
