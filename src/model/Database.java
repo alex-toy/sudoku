@@ -6,15 +6,48 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Arrays;
-//import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+
+
 public class Database {
 	
+	private Connection con;
 	private List<Person> people;
+	
+	public Database() {
+		super();
+		this.people = new ArrayList<Person>();
+	}
+	
+	public void connect() throws Exception {
+		if(con != null) return ;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			throw new Exception("driver not found");
+		}
+		String url = "jdbc:mysql://localhost:3306/swingtest";
+		con = DriverManager.getConnection(url, "root", "Colmoschin.80");
+		
+		System.out.println("connected to : " + con);
+	}
+	
+	public void disconnect() {
+		if(con != null) {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				System.out.println("cannot close connection");
+			}
+		}
+	}
 	
 	public void addPerson(Person person) {
 		people.add(person);
@@ -24,12 +57,7 @@ public class Database {
 	public void removePerson(int index) {
 		people.remove(index);
 	}
-
 	
-	public Database() {
-		super();
-		this.people = new ArrayList<Person>();
-	}
 	
 	public List<Person> getPeople() {
 		return  people;
