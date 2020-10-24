@@ -14,6 +14,7 @@ public class TestDatabase {
 		
 		System.out.println("running database test");
 		Database db = new Database();
+		
 		try {
 			db.connect();
 		} catch (Exception e) {
@@ -25,6 +26,13 @@ public class TestDatabase {
 		
 		try {
 			db.save();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			db.load();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

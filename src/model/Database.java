@@ -16,6 +16,8 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.mysql.jdbc.Statement;
+
 
 
 public class Database {
@@ -115,6 +117,33 @@ public class Database {
 	}
 	
 	
+	public void load() throws SQLException {
+		people.clear();
+		
+		String sql = "select id, name, age, employment_status, tax_id, us_citizen, gender, occupation from people order by name";
+		Statement selectStatement = (Statement) con.createStatement();
+		
+		ResultSet results = selectStatement.executeQuery(sql);
+		
+		while(results.next()) {
+			int id = results.getInt("id");
+			String name = results.getString("name");
+			String age = results.getString("age");
+			String emp = results.getString("employment_status");
+			String taxId = results.getString("tax_id");
+			boolean isUs = results.getBoolean("us_citizen");
+			String gender = results.getString("gender");
+			String occ = results.getString("occupation");
+			
+			Person person = new Person(id, name, occ, AgeCategory.valueOf(age), EmploymentCategory.valueOf(emp), taxId, isUs, Gender.valueOf(gender));
+			people.add(person);
+		}
+		
+		results.close();
+		selectStatement.close();
+	}
+	
+	
 	public void addPerson(Person person) {
 		people.add(person);
 	}
@@ -133,6 +162,7 @@ public class Database {
 	public void setPeople(LinkedList<Person> people) {
 		this.people = people;
 	}
+	
 	
 	public void saveToFile(File file) throws IOException {
 		FileOutputStream fos = new FileOutputStream(file);

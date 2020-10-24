@@ -13,20 +13,20 @@ public class Toolbar extends JPanel implements ActionListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JButton helloButton;
-	private JButton goodbyeButton;
+	private JButton saveButton;
+	private JButton refreshButton;
 	
-	private StringListener textListener;
+	private ToolBarListener textListener;
 	
 	public Toolbar() {
 		setBorder(BorderFactory.createEtchedBorder());
-		helloButton = new JButton("hello");
-		helloButton.addActionListener(this);
-		add(helloButton);
+		saveButton = new JButton("save");
+		saveButton.addActionListener(this);
+		add(saveButton);
 		
-		goodbyeButton = new JButton("bye");
-		goodbyeButton.addActionListener(this);
-		add(goodbyeButton);
+		refreshButton = new JButton("refresh");
+		refreshButton.addActionListener(this);
+		add(refreshButton);
 		
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 		
@@ -34,7 +34,7 @@ public class Toolbar extends JPanel implements ActionListener {
 		
 	}
 
-	public void setStringListener(StringListener listener) {
+	public void setToolbarListener(ToolBarListener listener) {
 		this.textListener = listener;
 	}
 
@@ -42,14 +42,14 @@ public class Toolbar extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		JButton clicked = (JButton) e.getSource();
 		
-		if( clicked == helloButton) {
+		if( clicked == saveButton) {
 			if(textListener != null) {
-				textListener.textEmitted("hello\n");
+				textListener.saveEventOccured();
 			}
 			
-		} else if(clicked == goodbyeButton) {
+		} else if(clicked == refreshButton) {
 			if(textListener != null) {
-				textListener.textEmitted("good bye\n");
+				textListener.refreshEventOccured();
 			}
 		}
 		

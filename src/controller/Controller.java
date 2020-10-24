@@ -3,6 +3,7 @@ package controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 //import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,22 @@ public class Controller {
 	
 	public List<Person> getPeople() {
 		return db.getPeople();
+	}
+	
+	public void save() throws SQLException {
+		db.save();
+	}
+	
+	public void load() throws SQLException {
+		db.load();
+	}
+	
+	public void connect() throws Exception {
+		db.connect();
+	}
+	
+	public void disconnect() {
+		db.disconnect();
 	}
 	
 	public void removePerson(int index) {

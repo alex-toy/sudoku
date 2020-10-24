@@ -4,7 +4,11 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.prefs.Preferences;
 
 import javax.swing.JCheckBoxMenuItem;
@@ -48,9 +52,25 @@ public class MainFrame extends JFrame {
 		
 		toolbar = new Toolbar();
 		textPanel = new TextPanel();
-		toolbar.setStringListener(new StringListener() {
-			public void textEmitted(String text) {
-				textPanel.appendText(text);
+		toolbar.setToolbarListener(new ToolBarListener() {
+			
+			public void saveEventOccured() {
+				connect();
+				try {
+					controller.save();
+				} catch (SQLException e) {
+					JOptionPane.showMessageDialog(MainFrame.this, "Unable to save to database.", "Database Connection Problem", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			
+			public void refreshEventOccured() {
+				connect();
+				try {
+					controller.load();
+				} catch (SQLException e) {
+					JOptionPane.showMessageDialog(MainFrame.this, "Unable to load from database.", "Database Connection Problem", JOptionPane.ERROR_MESSAGE);
+				}
+				tablePanel.refresh();
 			}
 		});
 		add(toolbar, BorderLayout.NORTH);
@@ -96,10 +116,19 @@ public class MainFrame extends JFrame {
 		
 		
 		
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent arg0) {
+				controller.disconnect();
+				dispose();
+				System.gc();
+			}
+		});
 		
+		
+				
 		setMinimumSize(new Dimension(500, 500));
 		setSize(500, 500);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setVisible(true);
 	}
 	
@@ -109,43 +138,28 @@ public class MainFrame extends JFrame {
 	//}
 
 	
-	
+	private void connect() {
+		try {
+			controller.connect();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(MainFrame.this, "Cannot connect to database.", "Database Connection Problem", JOptionPane.ERROR_MESSAGE);
+		}
+	}
 	
 	
 	private JMenuBar createMenuBar() {
+		
 		JMenuBar menuBar = new JMenuBar();
 		
 		
 		JMenu fileMenu = new JMenu("File");
-		menuBar.add(fileMenu);
-		JMenuItem exportDataItem = new JMenuItem("Export Data...");
-		fileMenu.add(exportDataItem);
-		JMenuItem importDataItem = new JMenuItem("Import Data...");
-		fileMenu.add(importDataItem);
-		fileMenu.addSeparator();
-		JMenuItem exitItem = new JMenuItem("Exit");
-		exitItem.setMnemonic(KeyEvent.VK_X);
-		exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
-		exitItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ev) {
-				
-				String mess = "Enter your user name";
-				String conf = "Enter user name";
-				String text = JOptionPane.showInputDialog(MainFrame.this, mess, conf, JOptionPane.OK_CANCEL_OPTION|JOptionPane.INFORMATION_MESSAGE);
-				System.out.println(text);
-				
-				String message = "Do you really want to quit the application ?";
-				String confirm = "Confirm exit";
-				int action = JOptionPane.showConfirmDialog(MainFrame.this, message, confirm, JOptionPane.OK_CANCEL_OPTION);
-				if(action == JOptionPane.OK_CANCEL_OPTION) {
-					System.exit(0);
-				}
-			}
-		});
-		fileMenu.add(exitItem);
 		fileMenu.setMnemonic(KeyEvent.VK_F);
+		fileMenu.addSeparator();
+		menuBar.add(fileMenu);
 		
 		
+		
+		JMenuItem importDataItem = new JMenuItem("Import Data...");
 		fileChooser = new JFileChooser();
 		fileChooser.addChoosableFileFilter(new PersonFileFilter());
 		importDataItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, ActionEvent.CTRL_MASK));
@@ -163,9 +177,11 @@ public class MainFrame extends JFrame {
 				}
 			}
 		});
+		fileMenu.add(importDataItem);
 		
 		
 		
+		JMenuItem exportDataItem = new JMenuItem("Export Data...");
 		exportDataItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
 				if(fileChooser.showSaveDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
@@ -179,6 +195,27 @@ public class MainFrame extends JFrame {
 				}
 			}
 		});
+		fileMenu.add(exportDataItem);
+		
+		
+		
+		JMenuItem exitItem = new JMenuItem("Exit");
+		exitItem.setMnemonic(KeyEvent.VK_X);
+		exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
+		exitItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ev) {
+				String message = "Do you really want to quit the application ?";
+				String confirm = "Confirm exit";
+				int action = JOptionPane.showConfirmDialog(MainFrame.this, message, confirm, JOptionPane.OK_CANCEL_OPTION);
+				if(action == JOptionPane.OK_CANCEL_OPTION) {
+					WindowListener[] listeners = getWindowListeners();
+					for(WindowListener listener: listeners) {
+						listener.windowClosing(new WindowEvent(MainFrame.this, 0));
+					}
+				}
+			}
+		});
+		fileMenu.add(exitItem);
 		
 		
 		
@@ -206,6 +243,9 @@ public class MainFrame extends JFrame {
 		
 		return menuBar;
 	}
+	
+	
+	//private JMenuItem 
 
 }
 
