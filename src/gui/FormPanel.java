@@ -44,9 +44,11 @@ public class FormPanel extends JPanel {
 	
 	
 	public FormPanel() {
+		
 		Dimension dim = getPreferredSize();
 		dim.width = 250;
 		setPreferredSize(dim);
+		setMinimumSize(dim);
 		
 		nameLabel = new JLabel("Name : ");
 		nameLabel.setDisplayedMnemonic(KeyEvent.VK_N);
@@ -262,7 +264,7 @@ public class FormPanel extends JPanel {
 		add(maleRadio, gc);
 		
 		
-////////fourth row///////////////////////////////////////
+		////////fourth row///////////////////////////////////////
 		
 		gc.gridy++;
 		

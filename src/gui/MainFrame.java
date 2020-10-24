@@ -18,6 +18,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
 import controller.Controller;
@@ -36,6 +38,9 @@ public class MainFrame extends JFrame {
 	private TablePanel tablePanel;
 	private PrefsDialog prefsDialog;
 	private Preferences prefs;
+	private JSplitPane splitPane;
+	private JTabbedPane tabPane;
+	private MessagePanel messagePanel;
 	
 	
 	public MainFrame() {
@@ -45,7 +50,7 @@ public class MainFrame extends JFrame {
 		
 		setLayout(new BorderLayout());
 		
-			
+		
 		setJMenuBar(createMenuBar());
 		
 		
@@ -73,7 +78,7 @@ public class MainFrame extends JFrame {
 				tablePanel.refresh();
 			}
 		});
-		add(toolbar, BorderLayout.NORTH);
+		add(toolbar, BorderLayout.PAGE_START);
 		
 		
 		
@@ -125,6 +130,15 @@ public class MainFrame extends JFrame {
 		});
 		
 		
+		tabPane = new JTabbedPane();
+		tabPane.addTab("Person Database", tablePanel);
+		messagePanel = new MessagePanel();
+		tabPane.addTab("Messages", messagePanel);
+		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, formPanel, tabPane);
+		splitPane.setOneTouchExpandable(true);
+		add(splitPane, BorderLayout.CENTER);
+		
+		
 				
 		setMinimumSize(new Dimension(500, 500));
 		setSize(500, 500);
@@ -132,10 +146,6 @@ public class MainFrame extends JFrame {
 		setVisible(true);
 	}
 	
-	//private void setMinimumSize(int i, int j) {
-		// TODO Auto-generated method stub
-		
-	//}
 
 	
 	private void connect() {
@@ -147,10 +157,21 @@ public class MainFrame extends JFrame {
 	}
 	
 	
+	
 	private JMenuBar createMenuBar() {
 		
 		JMenuBar menuBar = new JMenuBar();
+	
+		fileMenu(menuBar);
 		
+		windowMenu(menuBar);
+		
+		return menuBar;
+	}
+	
+	
+	
+	private void fileMenu(JMenuBar menuBar) {
 		
 		JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
@@ -219,8 +240,14 @@ public class MainFrame extends JFrame {
 		
 		
 		
+	}
+	
+	
+	private void windowMenu(JMenuBar menuBar) {
+		
 		JMenu windowMenu = new JMenu("Window");
 		menuBar.add(windowMenu);
+		
 		JMenu showMenu = new JMenu("show");
 		windowMenu.add(showMenu);
 		JCheckBoxMenuItem showFormItem = new JCheckBoxMenuItem("Person form");
@@ -228,10 +255,14 @@ public class MainFrame extends JFrame {
 		showFormItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
 				JCheckBoxMenuItem menuItem = (JCheckBoxMenuItem) ev.getSource();
+				if(menuItem.isSelected()) {
+					splitPane.setDividerLocation((int)formPanel.getMinimumSize().getWidth());
+				}
 				formPanel.setVisible(menuItem.isSelected());
 			}
 		});
 		showMenu.add(showFormItem);
+		
 		JMenuItem prefsItem = new JMenuItem("preferences");
 		prefsItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
 		prefsItem.addActionListener(new ActionListener() {
@@ -241,11 +272,7 @@ public class MainFrame extends JFrame {
 		});
 		windowMenu.add(prefsItem);
 		
-		return menuBar;
-	}
-	
-	
-	//private JMenuItem 
+	} 
 
 }
 
