@@ -7,10 +7,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.event.CellEditorListener;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeSelectionModel;
 
 public class MessagePanel extends JPanel {
@@ -22,15 +23,28 @@ public class MessagePanel extends JPanel {
 	
 	private JTree serverTree;
 	private ServerTreeCellRenderer treeCellRenderer;
-	
+	private ServerTreeCellEditor treeCellEditor;
 	
 
 	public MessagePanel() {
 
-		treeCellRenderer = new ServerTreeCellRenderer();
-
 		serverTree = new JTree(createTree());
+		treeCellRenderer = new ServerTreeCellRenderer();
 		serverTree.setCellRenderer(treeCellRenderer);
+		treeCellEditor = new ServerTreeCellEditor();
+		treeCellEditor.addCellEditorListener(new CellEditorListener() {
+			public void editingCanceled(ChangeEvent e) {
+			}
+			public void editingStopped(ChangeEvent e) {
+				ServerInfo info = (ServerInfo)treeCellEditor.getCellEditorValue();
+				
+				System.out.println(info + ": " + info.getId() + "; " + info.isChecked());
+				
+			}
+		});
+		serverTree.setCellEditor(treeCellEditor);
+		serverTree.setEditable(true);
+		
 
 		serverTree.getSelectionModel().setSelectionMode(
 				TreeSelectionModel.SINGLE_TREE_SELECTION);
