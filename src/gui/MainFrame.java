@@ -30,7 +30,6 @@ public class MainFrame extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private TextPanel textPanel;
 	private Toolbar toolbar;
 	private FormPanel formPanel;
 	private JFileChooser fileChooser;
@@ -41,6 +40,9 @@ public class MainFrame extends JFrame {
 	private JSplitPane splitPane;
 	private JTabbedPane tabPane;
 	private MessagePanel messagePanel;
+	
+	
+	private SudokuGrid sudokuGrid;
 	
 	
 	public MainFrame() {
@@ -54,71 +56,10 @@ public class MainFrame extends JFrame {
 		setJMenuBar(createMenuBar());
 		
 		
-		
-		toolbar = new Toolbar();
-		textPanel = new TextPanel();
-		toolbar.setToolbarListener(new ToolBarListener() {
-			
-			public void saveEventOccured() {
-				connect();
-				try {
-					controller.save();
-				} catch (SQLException e) {
-					JOptionPane.showMessageDialog(MainFrame.this, "Unable to save to database.", "Database Connection Problem", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-			
-			public void refreshEventOccured() {
-				connect();
-				try {
-					controller.load();
-				} catch (SQLException e) {
-					JOptionPane.showMessageDialog(MainFrame.this, "Unable to load from database.", "Database Connection Problem", JOptionPane.ERROR_MESSAGE);
-				}
-				tablePanel.refresh();
-			}
-		});
-		add(toolbar, BorderLayout.PAGE_START);
+		toolBar();
 		
 		
-		
-		tablePanel = new TablePanel();
-		tablePanel.setData(controller.getPeople());
-		tablePanel.setPersonTableListener(new PersonTableListener() {
-			public void rowDeleted(int row) {
-				controller.removePerson(row);
-				System.out.println(row);
-			}
-		});
-		add(tablePanel, BorderLayout.CENTER);
-		
-		
-		
-		formPanel = new FormPanel();
-		formPanel.setFormListener(new FormListener() {
-			public void formEventOccured(FormEvent e) {
-				controller.addPerson(e);
-				tablePanel.refresh();
-			}
-		});
-		add(formPanel, BorderLayout.WEST);
-		
-		
-		
-		prefsDialog = new PrefsDialog(this);
-		prefs = Preferences.userRoot().node("db");
-		prefsDialog.setPrefsListener(new PrefsListener() {
-			public void preferencesSet(String user, String password, int port) {
-				prefs.put("user", user);
-				prefs.put("password", password);
-				prefs.putInt("port", port);
-			}
-		});
-		String user = prefs.get("user", "");
-		String password = prefs.get("password", "");
-		Integer port = prefs.getInt("port", 3306);
-		prefsDialog.setDefaults(user, password, port);
-		
+		underMenuPanel();
 		
 		
 		addWindowListener(new WindowAdapter() {
@@ -128,16 +69,6 @@ public class MainFrame extends JFrame {
 				System.gc();
 			}
 		});
-		
-		
-		tabPane = new JTabbedPane();
-		tabPane.addTab("Person Database", tablePanel);
-		messagePanel = new MessagePanel();
-		tabPane.addTab("Messages", messagePanel);
-		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, formPanel, tabPane);
-		splitPane.setOneTouchExpandable(true);
-		add(splitPane, BorderLayout.CENTER);
-		
 		
 				
 		setMinimumSize(new Dimension(500, 500));
@@ -243,11 +174,13 @@ public class MainFrame extends JFrame {
 	}
 	
 	
+	
 	private void windowMenu(JMenuBar menuBar) {
 		
 		JMenu windowMenu = new JMenu("Window");
 		menuBar.add(windowMenu);
 		
+		//show
 		JMenu showMenu = new JMenu("show");
 		windowMenu.add(showMenu);
 		JCheckBoxMenuItem showFormItem = new JCheckBoxMenuItem("Person form");
@@ -263,6 +196,7 @@ public class MainFrame extends JFrame {
 		});
 		showMenu.add(showFormItem);
 		
+		//preferences
 		JMenuItem prefsItem = new JMenuItem("preferences");
 		prefsItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
 		prefsItem.addActionListener(new ActionListener() {
@@ -272,7 +206,125 @@ public class MainFrame extends JFrame {
 		});
 		windowMenu.add(prefsItem);
 		
+		
+		//window opened after clicking on preferences
+		prefsDialog = new PrefsDialog(this);
+		prefs = Preferences.userRoot().node("db");
+		prefsDialog.setPrefsListener(new PrefsListener() {
+			public void preferencesSet(String user, String password, int port) {
+				prefs.put("user", user);
+				prefs.put("password", password);
+				prefs.putInt("port", port);
+			}
+		});
+		String user = prefs.get("user", "");
+		String password = prefs.get("password", "");
+		Integer port = prefs.getInt("port", 3306);
+		prefsDialog.setDefaults(user, password, port);
+		
 	} 
+	
+	
+		
+	private void toolBar() {
+		
+		toolbar = new Toolbar();
+		new TextPanel();
+		toolbar.setToolbarListener(new ToolBarListener() {
+			
+			public void saveEventOccured() {
+				connect();
+				try {
+					controller.save();
+				} catch (SQLException e) {
+					JOptionPane.showMessageDialog(MainFrame.this, "Unable to save to database.", "Database Connection Problem", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			
+			public void refreshEventOccured() {
+				connect();
+				try {
+					controller.load();
+				} catch (SQLException e) {
+					JOptionPane.showMessageDialog(MainFrame.this, "Unable to load from database.", "Database Connection Problem", JOptionPane.ERROR_MESSAGE);
+				}
+				tablePanel.refresh();
+			}
+		});
+		add(toolbar, BorderLayout.PAGE_START);
+	} 
+	
+	
+	
+	private void underMenuPanel() {
+		
+		formularyPanel();
+		
+		//tablePanel();
+		
+		//ongletPanel();
+		
+		//splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, formPanel, tabPane);
+		//splitPane.setOneTouchExpandable(true);
+		//add(splitPane, BorderLayout.CENTER);
+		
+		
+		sudokuPanel();
+		
+	}
+	
+	
+	
+	private void formularyPanel() {
+		
+		formPanel = new FormPanel();
+		formPanel.setFormListener(new FormListener() {
+			public void formEventOccured(FormEvent e) {
+				controller.addPerson(e);
+				tablePanel.refresh();
+			}
+		});
+		add(formPanel, BorderLayout.WEST);
+		
+	}
+	
+	
+	
+	private void tablePanel() {
+		
+		tablePanel = new TablePanel();
+		tablePanel.setData(controller.getPeople());
+		tablePanel.setPersonTableListener(new PersonTableListener() {
+			public void rowDeleted(int row) {
+				controller.removePerson(row);
+				System.out.println(row);
+			}
+		});
+		add(tablePanel, BorderLayout.CENTER);
+		
+	}
+	
+	
+	
+	private void ongletPanel() {
+		
+		tabPane = new JTabbedPane();
+		tabPane.addTab("Person Database", tablePanel);
+		messagePanel = new MessagePanel();
+		tabPane.addTab("Messages", messagePanel);
+		
+	}
+	
+	
+	
+	private void sudokuPanel() {
+		
+		sudokuGrid = new SudokuGrid(9, 9);
+		add(sudokuGrid, BorderLayout.EAST);
+		
+	}
+	
+	
 
 }
 
