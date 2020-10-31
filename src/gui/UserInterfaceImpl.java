@@ -10,6 +10,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -21,6 +23,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 
 import java.util.HashMap;
 
@@ -71,6 +75,7 @@ public class UserInterfaceImpl implements IUserInterfaceContract.View, EventHand
         drawSudokuBoard(root);
         drawTextFields(root);
         drawGridLines(root);
+        drawCommands(root);
         stage.show();
     }
 
@@ -218,11 +223,35 @@ public class UserInterfaceImpl implements IUserInterfaceContract.View, EventHand
         
         root.getChildren().add(title);
     }
-
-    /**
-     * Each time the user makes an input (which can be 0 to delete a number), we update the user
-     * interface appropriately.
-     */
+    
+    
+    private void drawCommands(Group root) {
+    	Button resolve = new Button();
+        resolve.setText("Resolve");
+        resolve.setLayoutX(300);
+        resolve.setLayoutY(20);
+        resolve.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("resolve!");
+            }
+        });
+    	root.getChildren().add(resolve);
+    	
+    	Button new_game = new Button();
+    	new_game.setText("New game");
+    	new_game.setLayoutX(300);
+    	new_game.setLayoutY(50);
+    	new_game.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("new game!");
+            }
+        });
+    	root.getChildren().add(new_game);
+    }
+    
+    
     @Override
     public void updateSquare(int x, int y, int input) {
         SudokuTextField tile = textFieldCoordinates.get(new Coordinates(x, y));
