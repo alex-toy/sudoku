@@ -1,7 +1,7 @@
 package model;
 
-import com.wiseassblog.sudoku.problemdomain.SudokuGame;
-import com.wiseassblog.sudoku.problemdomain.IStorage;
+import problemdomain.SudokuGame;
+import problemdomain.IStorage;
 
 import java.io.*;
 

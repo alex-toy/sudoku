@@ -5,6 +5,12 @@ package services.computationlogic;
 
 import java.io.IOException;
 
+import gui.ControlLogic;
+import gui.IUserInterfaceContract;
+import model.LocalStorageImpl;
+import problemdomain.IStorage;
+import problemdomain.SudokuGame;
+
 public class SudokuBuildLogic {
 
     /**
@@ -13,7 +19,7 @@ public class SudokuBuildLogic {
      */
     public static void build(IUserInterfaceContract.View userInterface) throws IOException {
         SudokuGame initialState;
-        IStorage storage = new LocalStorageImpl();
+        IStorage storage = (IStorage) new LocalStorageImpl();
 
         try {
             //will throw if no game data is found in local storage

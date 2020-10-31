@@ -4,6 +4,7 @@ package problemdomain;
 
 import java.io.Serializable;
 
+import constants.GameState;
 import services.computationlogic.SudokuUtilities;
 
 /**

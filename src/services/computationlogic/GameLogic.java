@@ -1,12 +1,13 @@
 package services.computationlogic;
 
-import com.wiseassblog.sudoku.constants.GameState;
-import com.wiseassblog.sudoku.constants.Rows;
-import com.wiseassblog.sudoku.problemdomain.SudokuGame;
+
+import constants.Rows;
+import constants.GameState;
+import problemdomain.SudokuGame;
 
 import java.util.*;
 
-import static com.wiseassblog.sudoku.problemdomain.SudokuGame.GRID_BOUNDARY;
+import static problemdomain.SudokuGame.GRID_BOUNDARY;
 
 /**
  * Q: Why isn't this a class hidden behind an interface?

@@ -1,6 +1,6 @@
 package services.computationlogic;
 
-import static com.wiseassblog.sudoku.problemdomain.SudokuGame.GRID_BOUNDARY;
+import static problemdomain.SudokuGame.GRID_BOUNDARY;
 
 import problemdomain.Coordinates;
 
