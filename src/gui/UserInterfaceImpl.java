@@ -1,5 +1,6 @@
 package gui;
 
+import constants.Dimensions;
 import constants.GameState;
 import problemdomain.Coordinates;
 import problemdomain.SudokuGame;
@@ -30,34 +31,23 @@ public class UserInterfaceImpl implements IUserInterfaceContract.View,
     private final Stage stage;
     private final Group root;
 
-    //This HashMap stores the Hash Values (a unique identifier which is automatically generated;
-    // see java.lang.object in the documentation) of each TextField by their Coordinates. When a SudokuGame
-    //is given to the updateUI method, we iterate through it by X and Y coordinates and assign the values to the
-    //appropriate TextField therein. This means we don't need to hold a reference variable for every god damn
-    //text field in this app; which would be awful.
-    //The Key (<Key, Value> -> <Coordinates, Integer>) will be the HashCode of a given InputField for ease of lookup
     private HashMap<Coordinates, SudokuTextField> textFieldCoordinates;
 
     private IUserInterfaceContract.EventListener listener;
 
     //Size of the window
+    //private static final double WINDOW_Y = 732;
     private static final double WINDOW_Y = 732;
     private static final double WINDOW_X = 668;
     //distance between window and board
     private static final double BOARD_PADDING = 50;
 
-    private static final double BOARD_X_AND_Y = 576;
+    private static final double BOARD_X_AND_Y = Dimensions.TOTAL_SIZE;
     private static final Color WINDOW_BACKGROUND_COLOR = Color.rgb(0, 150, 136);
     private static final Color BOARD_BACKGROUND_COLOR = Color.rgb(224, 242, 241);
     private static final String SUDOKU = "Sudoku";
 
     /**
-     * Stage and Group are JavaFX specific classes for modifying the UI. Think of them as containers of various UI
-     * components.
-     *
-     * A HashMap is a data structure which stores key/value pairs. Rather than creating a member variable for every
-     * SudokuTextField object (all 81 of them), I instead store these references within a HashMap, and I retrieve
-     * them by using their X and Y Coordinates as a "key" (a unique value used to look something up).
      *
      * @param stage
      */
@@ -95,22 +85,18 @@ public class UserInterfaceImpl implements IUserInterfaceContract.View,
         final int xOrigin = 50;
         final int yOrigin = 50;
         //how much to move the x or y value after each loop
-        final int xAndYDelta = 64;
+        final int xAndYDelta = Dimensions.DELTA;
 
 
         for (int xIndex = 0; xIndex < 9; xIndex++) {
             for (int yIndex = 0; yIndex < 9; yIndex++) {
                 int x = xOrigin + xIndex * xAndYDelta;
                 int y = yOrigin + yIndex * xAndYDelta;
-                //draw it
+                
                 SudokuTextField tile = new SudokuTextField(xIndex, yIndex);
 
-                //encapsulated style information
                 styleSudokuTile(tile, x, y);
 
-                //Note: Note that UserInterfaceImpl implements EventHandler<ActionEvent> in the class declaration.
-                //By passing "this" (which means the current instance of UserInterfaceImpl), when an action occurs,
-                //it will jump straight to "handle(ActionEvent actionEvent)" down below.
                 tile.setOnKeyPressed(this);
 
                 textFieldCoordinates.put(new Coordinates(xIndex, yIndex), tile);
@@ -159,7 +145,7 @@ public class UserInterfaceImpl implements IUserInterfaceContract.View,
             }
 
             Rectangle verticalLine = getLine(
-                    xAndY + 64 * index,
+                    xAndY + Dimensions.CHECKBOX_WIDTH * index,
                     BOARD_PADDING,
                     BOARD_X_AND_Y,
                     thickness
@@ -167,7 +153,7 @@ public class UserInterfaceImpl implements IUserInterfaceContract.View,
 
             Rectangle horizontalLine = getLine(
                     BOARD_PADDING,
-                    xAndY + 64 * index,
+                    xAndY + Dimensions.CHECKBOX_HEIGHT * index,
                     thickness,
                     BOARD_X_AND_Y
             );
@@ -264,8 +250,6 @@ public class UserInterfaceImpl implements IUserInterfaceContract.View,
                         value
                 );
 
-                //If a given tile has a non-zero value and the state of the game is GameState.NEW, then mark
-                //the tile as read only. Otherwise, ensure that it is NOT read only.
                 if (game.getGameState() == GameState.NEW){
                     if (value.equals("")) {
                         tile.setStyle("-fx-opacity: 1;");
