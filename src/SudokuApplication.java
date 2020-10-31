@@ -8,10 +8,7 @@ import java.io.IOException;
 import gui.IUserInterfaceContract;
 import gui.UserInterfaceImpl;
 
-/**
- * This class is the Root Container (the thing which attends to all of the primary objects which must communicate when
- * the program is running (a running program is called a "process").
- */
+
 public class SudokuApplication extends Application {
     private IUserInterfaceContract.View uiImpl;
 

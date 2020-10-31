@@ -6,8 +6,6 @@ import constants.GameState;
 import problemdomain.Coordinates;
 import problemdomain.SudokuGame;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -31,7 +29,6 @@ import java.util.HashMap;
  */
 public class BadUserInterfaceImpl implements IUserInterfaceContract.View,
         EventHandler<KeyEvent> {
-    private final Stage stage;
     private final Group root;
 
     private HashMap<Coordinates, SudokuTextField> textFieldCoordinates;
@@ -40,7 +37,6 @@ public class BadUserInterfaceImpl implements IUserInterfaceContract.View,
     
 
     public BadUserInterfaceImpl(Stage stage) {
-        this.stage = stage;
         this.root = new Group();
         this.textFieldCoordinates = new HashMap<>();
 
