@@ -10,7 +10,8 @@ import gui.UserInterfaceImpl;
 
 
 public class SudokuApplication extends Application {
-    private IUserInterfaceContract.View uiImpl;
+    
+	private IUserInterfaceContract.View uiImpl;
 
     @Override
     public void start(Stage primaryStage) throws IOException {

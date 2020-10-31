@@ -19,6 +19,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.util.HashMap;
@@ -26,9 +27,9 @@ import java.util.HashMap;
 /**
  * Manages the window, and displays a pop up notification when the user completes the puzzle.
  */
-public class UserInterfaceImpl implements IUserInterfaceContract.View,
-        EventHandler<KeyEvent> {
-    private final Stage stage;
+public class UserInterfaceImpl implements IUserInterfaceContract.View, EventHandler<KeyEvent> {
+    
+	private final Stage stage;
     private final Group root;
 
     private HashMap<Coordinates, SudokuTextField> textFieldCoordinates;
@@ -37,10 +38,10 @@ public class UserInterfaceImpl implements IUserInterfaceContract.View,
 
     //Size of the window
     //private static final double WINDOW_Y = 732;
-    private static final double WINDOW_Y = 732;
-    private static final double WINDOW_X = 668;
+    private static final double WINDOW_Y = Dimensions.WINDOW_X;
+    private static final double WINDOW_X = Dimensions.WINDOW_X;
     //distance between window and board
-    private static final double BOARD_PADDING = 50;
+    private static final double BOARD_PADDING = Dimensions.BOARD_PADDING;
 
     private static final double BOARD_X_AND_Y = Dimensions.TOTAL_SIZE;
     private static final Color WINDOW_BACKGROUND_COLOR = Color.rgb(0, 150, 136);
@@ -82,8 +83,8 @@ public class UserInterfaceImpl implements IUserInterfaceContract.View,
      */
     private void drawTextFields(Group root) {
         //where to start drawing the numbers
-        final int xOrigin = 50;
-        final int yOrigin = 50;
+        final int xOrigin = (int) Dimensions.BOARD_PADDING;
+        final int yOrigin = (int) Dimensions.BOARD_PADDING;
         //how much to move the x or y value after each loop
         final int xAndYDelta = Dimensions.DELTA;
 
@@ -113,14 +114,13 @@ public class UserInterfaceImpl implements IUserInterfaceContract.View,
      * @param y
      */
     private void styleSudokuTile(SudokuTextField tile, double x, double y) {
-        Font numberFont = new Font(32);
+        Font numberFont = new Font(Dimensions.NUMBER_SIZE);
         tile.setFont(numberFont);
         tile.setAlignment(Pos.CENTER);
-
         tile.setLayoutX(x);
         tile.setLayoutY(y);
-        tile.setPrefHeight(64);
-        tile.setPrefWidth(64);
+        tile.setPrefHeight(Dimensions.CHECKBOX_HEIGHT);
+        tile.setPrefWidth(Dimensions.CHECKBOX_WIDTH);
 
         tile.setBackground(Background.EMPTY);
     }
@@ -134,7 +134,7 @@ public class UserInterfaceImpl implements IUserInterfaceContract.View,
      */
     private void drawGridLines(Group root) {
         //draw vertical lines starting at 114x and 114y:
-        int xAndY = 114;
+        int xAndY = (int) Dimensions.XANDY;
         int index = 0;
         while (index < 8) {
             int thickness;
@@ -212,10 +212,10 @@ public class UserInterfaceImpl implements IUserInterfaceContract.View,
     }
 
     private void drawTitle(Group root) {
-        Text title = new Text(235, 690, SUDOKU);
+        Text title = new Text(50, Dimensions.TOTAL_SIZE + 50, SUDOKU);
+        title.setFont(new Font(20));
         title.setFill(Color.WHITE);
-        Font titleFont = new Font(43);
-        title.setFont(titleFont);
+        
         root.getChildren().add(title);
     }
 
