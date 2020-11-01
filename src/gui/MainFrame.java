@@ -403,6 +403,19 @@ public class MainFrame extends JFrame {
 		windowPanel.add(buttonSelectionPanel);
 		this.add(windowPanel);
 		
+		
+		sPanel.setFontSize(26);
+		buttonSelectionPanel.removeAll();
+		for(String value : sPanel.getPuzzle().getValidValues()) {
+			JButton b = new JButton(value);
+			b.setPreferredSize(new Dimension(40,40));
+			b.addActionListener(sPanel.new NumActionListener());
+			buttonSelectionPanel.add(b);
+		}
+		sPanel.repaint();
+		buttonSelectionPanel.revalidate();
+		buttonSelectionPanel.repaint();
+		
 	}
 	
 
