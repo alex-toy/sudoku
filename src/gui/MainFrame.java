@@ -12,6 +12,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.prefs.Preferences;
 
 import javax.swing.DefaultCellEditor;
@@ -388,12 +389,20 @@ public class MainFrame extends JFrame {
 
 		sPanel = new SudokuPanel();
 		
+		int [][][] board = new int[9][9][9];
+		for(int j=0;j<9;j++){  
+			for(int i=0;i<9;i++){
+				String str = sPanel.getPuzzle().getBoard()[j][i];
+				int n = 0;
+				if(str.length() == 1) { n = Integer.parseInt(str); board[j][i][n-1] = n; }
+		    }
+	    }
+		
+		
 		windowPanel.add(sPanel);
 		windowPanel.add(buttonSelectionPanel);
 		this.add(windowPanel);
 		
-		rebuildInterface(SudokuPuzzleType.NINEBYNINE, 26);
-   		
 	}
 	
 

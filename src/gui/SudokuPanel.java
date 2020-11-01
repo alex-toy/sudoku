@@ -19,6 +19,10 @@ import javax.swing.event.MouseInputAdapter;
 public class SudokuPanel extends JPanel {
 
 	private SudokuPuzzle puzzle;
+	public SudokuPuzzle getPuzzle() {
+		return puzzle;
+	}
+
 	private int currentlySelectedCol;
 	private int currentlySelectedRow;
 	private int usedWidth;
@@ -141,3 +145,14 @@ public class SudokuPanel extends JPanel {
 		}
 	}
 }
+
+
+
+
+
+
+
+
+
+
+

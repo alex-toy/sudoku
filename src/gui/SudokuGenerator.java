@@ -34,7 +34,6 @@ public class SudokuGenerator {
 				i++;
 			}
 		}
-		
 		return puzzle;
 	}
 	
@@ -45,7 +44,7 @@ public class SudokuGenerator {
 	 * @param r: the current row
 	 * @param c: the current column
 	 * @return valid move or not or done
-	 * Responses: Erroneous data 
+	 * Responses: Erroneous data
 	 */
     private boolean backtrackSudokuSolver(int r,int c,SudokuPuzzle puzzle) {
     	//If the move is not valid return false
@@ -97,3 +96,6 @@ public class SudokuGenerator {
 		return false;
 	}
 }
+
+
+
