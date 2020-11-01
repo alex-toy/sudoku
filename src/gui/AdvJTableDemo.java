@@ -1,6 +1,5 @@
 package gui;
 
-
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -8,7 +7,7 @@ import java.awt.event.*;
 import java.awt.*;
 import java.util.Vector;
 
-class SudokuGrid extends JPanel {
+class AdvJTableDemo extends JFrame {
     /**
 	 * 
 	 */
@@ -19,11 +18,10 @@ class SudokuGrid extends JPanel {
 
     Container ContentPane;
 
-    SudokuGrid() {
-        //super("Sudoku");
-    	super(new GridBagLayout());
+    AdvJTableDemo() {
+        super("Sudoku");
 
-        //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         final String[] colHeader = { "Name", "Proficient In", "Experience",
                 "Relocate" };
@@ -64,12 +62,12 @@ class SudokuGrid extends JPanel {
 
         experiance.setCellRenderer(getRenderer());
 
-        //ContentPane = getContentPane();
+        ContentPane = getContentPane();
 
         ContentPane.add(new JScrollPane(table));
 
-        //pack();
-        //setVisible(true);
+        pack();
+        setVisible(true);
     }
 
     public static DefaultTableCellRenderer getRenderer() {
@@ -84,7 +82,5 @@ class SudokuGrid extends JPanel {
             }
         };
     }
-    
-    
 }
 

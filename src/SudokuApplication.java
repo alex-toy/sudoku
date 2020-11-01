@@ -5,6 +5,7 @@ import services.computationlogic.SudokuBuildLogic;
 
 import java.io.IOException;
 
+import gui.DynamicTiles;
 import gui.IUserInterfaceContract;
 import gui.UserInterfaceImpl;
 
@@ -12,11 +13,13 @@ import gui.UserInterfaceImpl;
 public class SudokuApplication extends Application {
     
 	private IUserInterfaceContract.View uiImpl;
+	//private DynamicTiles dynTiles;
 
     @Override
     public void start(Stage primaryStage) throws IOException {
         
     	uiImpl = new UserInterfaceImpl(primaryStage);
+    	//dynTiles = new DynamicTiles();
 
         try {
             SudokuBuildLogic.build(uiImpl);

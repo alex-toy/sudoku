@@ -1,6 +1,9 @@
 package gui;
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -11,18 +14,32 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.prefs.Preferences;
 
+import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.KeyStroke;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumn;
+
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import controller.Controller;
+import gui.SudokuPanel.NumActionListener;
 
 public class MainFrame extends JFrame {
 	
@@ -39,10 +56,12 @@ public class MainFrame extends JFrame {
 	private Preferences prefs;
 	private JSplitPane splitPane;
 	private JTabbedPane tabPane;
-	private MessagePanel messagePanel;
+	private MessagePanel messagePanel;  
 	
-	
-	private SudokuGrid sudokuGrid;
+	private SudokuPanel sudokuPanel;
+	//private SudokuGrid sudokuGrid;
+	private JPanel buttonSelectionPanel;
+	private SudokuPanel sPanel;
 	
 	
 	public MainFrame() {
@@ -70,9 +89,8 @@ public class MainFrame extends JFrame {
 			}
 		});
 		
-				
-		setMinimumSize(new Dimension(500, 500));
-		setSize(500, 500);
+		setMinimumSize(new Dimension(1200, 600));
+		setSize(1200, 600);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setVisible(true);
 	}
@@ -222,6 +240,22 @@ public class MainFrame extends JFrame {
 		Integer port = prefs.getInt("port", 3306);
 		prefsDialog.setDefaults(user, password, port);
 		
+		
+		JMenu file = new JMenu("Game");
+		JMenu newGame = new JMenu("New Game");
+		JMenuItem sixBySixGame = new JMenuItem("6 By 6 Game");
+		sixBySixGame.addActionListener(new NewGameListener(SudokuPuzzleType.SIXBYSIX,30));
+		JMenuItem nineByNineGame = new JMenuItem("9 By 9 Game");
+		nineByNineGame.addActionListener(new NewGameListener(SudokuPuzzleType.NINEBYNINE,26));
+		JMenuItem twelveByTwelveGame = new JMenuItem("12 By 12 Game");
+		twelveByTwelveGame.addActionListener(new NewGameListener(SudokuPuzzleType.TWELVEBYTWELVE,20));
+		newGame.add(sixBySixGame);
+		newGame.add(nineByNineGame);
+		newGame.add(twelveByTwelveGame);
+		file.add(newGame);
+		menuBar.add(file);
+		this.setJMenuBar(menuBar);
+		
 	} 
 	
 	
@@ -259,15 +293,6 @@ public class MainFrame extends JFrame {
 	private void underMenuPanel() {
 		
 		formularyPanel();
-		
-		//tablePanel();
-		
-		//ongletPanel();
-		
-		//splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, formPanel, tabPane);
-		//splitPane.setOneTouchExpandable(true);
-		//add(splitPane, BorderLayout.CENTER);
-		
 		
 		sudokuPanel();
 		
@@ -314,16 +339,62 @@ public class MainFrame extends JFrame {
 		tabPane.addTab("Messages", messagePanel);
 		
 	}
+
 	
+	
+	private class NewGameListener implements ActionListener {
+
+		private SudokuPuzzleType puzzleType;
+		private int fontSize;
+		
+		public NewGameListener(SudokuPuzzleType puzzleType,int fontSize) {
+			this.puzzleType = puzzleType;
+			this.fontSize = fontSize;
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			rebuildInterface(puzzleType,fontSize);
+		}
+	}
+	
+	
+	public void rebuildInterface(SudokuPuzzleType puzzleType,int fontSize) {
+		SudokuPuzzle generatedPuzzle = new SudokuGenerator().generateRandomSudoku(puzzleType);
+		sPanel.newSudokuPuzzle(generatedPuzzle);
+		sPanel.setFontSize(fontSize);
+		buttonSelectionPanel.removeAll();
+		for(String value : generatedPuzzle.getValidValues()) {
+			JButton b = new JButton(value);
+			b.setPreferredSize(new Dimension(40,40));
+			b.addActionListener(sPanel.new NumActionListener());
+			buttonSelectionPanel.add(b);
+		}
+		sPanel.repaint();
+		buttonSelectionPanel.revalidate();
+		buttonSelectionPanel.repaint();
+	}
 	
 	
 	private void sudokuPanel() {
 		
-		sudokuGrid = new SudokuGrid(9, 9);
-		add(sudokuGrid, BorderLayout.EAST);
+		JPanel windowPanel = new JPanel();
+		windowPanel.setLayout(new FlowLayout());
+		windowPanel.setPreferredSize(new Dimension(800,600));
 		
+		
+		buttonSelectionPanel = new JPanel();
+		buttonSelectionPanel.setPreferredSize(new Dimension(90,500));
+
+		sPanel = new SudokuPanel();
+		
+		windowPanel.add(sPanel);
+		windowPanel.add(buttonSelectionPanel);
+		this.add(windowPanel);
+		
+		rebuildInterface(SudokuPuzzleType.NINEBYNINE, 26);
+   		
 	}
-	
 	
 
 }

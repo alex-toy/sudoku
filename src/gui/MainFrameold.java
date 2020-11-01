@@ -319,8 +319,8 @@ public class MainFrameold extends JFrame {
 	
 	private void sudokuPanel() {
 		
-		sudokuGrid = new SudokuGrid(9, 9);
-		add(sudokuGrid, BorderLayout.EAST);
+		sudokuGrid = new SudokuGrid();
+		//add(sudokuGrid, BorderLayout.EAST);
 		
 	}
 	

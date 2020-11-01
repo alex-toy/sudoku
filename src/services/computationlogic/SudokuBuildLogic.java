@@ -1,12 +1,10 @@
 package services.computationlogic;
 
-
-
-
 import java.io.IOException;
 
 import gui.ControlLogic;
 import gui.IUserInterfaceContract;
+
 import model.LocalStorageImpl;
 import problemdomain.IStorage;
 import problemdomain.SudokuGame;
@@ -29,4 +27,6 @@ public class SudokuBuildLogic {
         userInterface.setListener(uiLogic);
         userInterface.updateBoard(initialState);
     }
+    
+    
 }
