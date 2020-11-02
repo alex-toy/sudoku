@@ -67,6 +67,7 @@ public class MainFrame extends JFrame {
 	
 	public MainFrame() {
 		super("Sudoku");
+		this.sPanel = new SudokuPanel();
 		
 		controller = new Controller();
 		
@@ -303,7 +304,7 @@ public class MainFrame extends JFrame {
 	
 	private void formularyPanel() {
 		
-		formPanel = new FormPanel();
+		formPanel = new FormPanel(this.sPanel);
 		formPanel.setFormListener(new FormListener() {
 			public void formEventOccured(FormEvent e) {
 				controller.addPerson(e);
@@ -315,34 +316,7 @@ public class MainFrame extends JFrame {
 	}
 	
 	
-	
-	private void tablePanel() {
-		
-		tablePanel = new TablePanel();
-		tablePanel.setData(controller.getPeople());
-		tablePanel.setPersonTableListener(new PersonTableListener() {
-			public void rowDeleted(int row) {
-				controller.removePerson(row);
-				System.out.println(row);
-			}
-		});
-		add(tablePanel, BorderLayout.CENTER);
-		
-	}
-	
-	
-	
-	private void ongletPanel() {
-		
-		tabPane = new JTabbedPane();
-		tabPane.addTab("Person Database", tablePanel);
-		messagePanel = new MessagePanel();
-		tabPane.addTab("Messages", messagePanel);
-		
-	}
 
-	
-	
 	private class NewGameListener implements ActionListener {
 
 		private SudokuPuzzleType puzzleType;
@@ -358,6 +332,7 @@ public class MainFrame extends JFrame {
 			rebuildInterface(puzzleType,fontSize);
 		}
 	}
+	
 	
 	
 	public void rebuildInterface(SudokuPuzzleType puzzleType,int fontSize) {
@@ -377,6 +352,7 @@ public class MainFrame extends JFrame {
 	}
 	
 	
+	
 	private void sudokuPanel() {
 		
 		JPanel windowPanel = new JPanel();
@@ -387,7 +363,7 @@ public class MainFrame extends JFrame {
 		buttonSelectionPanel = new JPanel();
 		buttonSelectionPanel.setPreferredSize(new Dimension(90,500));
 
-		sPanel = new SudokuPanel();
+		
 		
 		int [][][] board = new int[9][9][9];
 		for(int j=0;j<9;j++){  
@@ -400,21 +376,20 @@ public class MainFrame extends JFrame {
 		
 		
 		windowPanel.add(sPanel);
-		windowPanel.add(buttonSelectionPanel);
+		//windowPanel.add(buttonSelectionPanel);
 		this.add(windowPanel);
 		
 		
 		sPanel.setFontSize(26);
-		buttonSelectionPanel.removeAll();
+		
 		for(String value : sPanel.getPuzzle().getValidValues()) {
+			System.out.println(value);
 			JButton b = new JButton(value);
 			b.setPreferredSize(new Dimension(40,40));
 			b.addActionListener(sPanel.new NumActionListener());
 			buttonSelectionPanel.add(b);
 		}
-		sPanel.repaint();
-		buttonSelectionPanel.revalidate();
-		buttonSelectionPanel.repaint();
+		
 		
 	}
 	
