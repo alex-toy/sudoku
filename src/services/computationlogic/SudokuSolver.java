@@ -20,6 +20,8 @@ public class SudokuSolver {
 	
 	static int[][][] matrice; // représentation de la grille de sudoku
 	
+	static int[][][] mat_sol;
+	
 	
 	public void display(int[][][] board) {
 		for (int j = 0 ; j < 9 ; j++) {
