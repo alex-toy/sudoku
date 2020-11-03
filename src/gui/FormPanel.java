@@ -46,16 +46,7 @@ public class FormPanel extends JPanel {
 		setPreferredSize(dim);
 		setMinimumSize(dim);
 		
-		
-		oKBtn = new JButton("OK");
-		oKBtn.setMnemonic(KeyEvent.VK_O);
-		oKBtn.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("test ok");
-			}
-		});
-		
-		
+				
 		buttonSelectionPanel = new JPanel();
 		buttonSelectionPanel.setPreferredSize(new Dimension(90,500));
 		
@@ -76,42 +67,136 @@ public class FormPanel extends JPanel {
 		
 		GridBagConstraints gc = new GridBagConstraints();
 		
-		////////First row///////////////////////////////////////
 		
+		// ////////// First row ///////////////////////////////////
+
 		gc.gridy = 0;
-		
 		gc.weightx = 1;
 		gc.weighty = 0.1;
-		
+
 		gc.gridx = 0;
 		gc.fill = GridBagConstraints.NONE;
 		gc.anchor = GridBagConstraints.LINE_END;
 		gc.insets = new Insets(0, 0, 0, 5);
-		
+		JButton b1 = new JButton("1");
+		b1.addActionListener(sPanel.new NumActionListener());
+		add(b1, gc);
+
 		gc.gridx = 1;
 		gc.gridy = 0;
 		gc.insets = new Insets(0, 0, 0, 0);
 		gc.anchor = GridBagConstraints.LINE_START;
-		
-		JButton b1 = new JButton("1");
-		b1.addActionListener(sPanel.new NumActionListener());
-		b1.setPreferredSize(new Dimension(40,40));
-		buttonSelectionPanel.add(b1);
-		
-			
 		JButton b2 = new JButton("2");
 		b2.addActionListener(sPanel.new NumActionListener());
-		b2.setPreferredSize(new Dimension(40,40));
-		buttonSelectionPanel.add(b2);
+		add(b2, gc);
 		
+
 		
+
+		// //////////Second row ///////////////////////////////////
+
+		gc.gridy++;
+
+		gc.weightx = 1;
+		//gc.weighty = 0.1;
+
+		gc.gridx = 0;
+		gc.insets = new Insets(0, 0, 0, 5);
+		gc.anchor = GridBagConstraints.LINE_END;
 		JButton b3 = new JButton("3");
 		b3.addActionListener(sPanel.new NumActionListener());
-		b3.setPreferredSize(new Dimension(40,40));
-		buttonSelectionPanel.add(b3);
+		add(b3, gc);
+
+		gc.gridx = 1;
+		gc.insets = new Insets(0, 0, 0, 0);
+		gc.anchor = GridBagConstraints.LINE_START;
+		JButton b4 = new JButton("4");
+		b4.addActionListener(sPanel.new NumActionListener());
+		add(b4, gc);
 		
-				
+		
+		
+		
+		// //////////Next row ///////////////////////////////////
+
+		gc.gridy++;
+
+		gc.weightx = 1;
+		gc.weighty = 0.2;
+
+		gc.gridx = 0;
+		gc.insets = new Insets(0, 0, 0, 5);
+		gc.anchor = GridBagConstraints.FIRST_LINE_END;
+		JButton b5 = new JButton("5");
+		b5.addActionListener(sPanel.new NumActionListener());
+		add(b5, gc);
+
+		gc.gridx = 1;
+		gc.anchor = GridBagConstraints.FIRST_LINE_START;
+		gc.insets = new Insets(0, 0, 0, 0);
+		JButton b6 = new JButton("6");
+		b6.addActionListener(sPanel.new NumActionListener());
+		add(b6, gc);
+		
+		
+		
+		// //////////Next row ///////////////////////////////////
+
+		gc.gridy++;
+
+		gc.weightx = 1;
+		gc.weighty = 0.2;
+
+		gc.gridx = 0;
+		gc.insets = new Insets(0, 0, 0, 5);
+		gc.anchor = GridBagConstraints.FIRST_LINE_END;
+		JButton b7 = new JButton("7");
+		b7.addActionListener(sPanel.new NumActionListener());
+		add(b7, gc);
+
+		gc.gridx = 1;
+		gc.anchor = GridBagConstraints.FIRST_LINE_START;
+		gc.insets = new Insets(0, 0, 0, 0);
+		JButton b8 = new JButton("8");
+		b8.addActionListener(sPanel.new NumActionListener());
+		add(b8, gc);
+		
+		
+		
+		// //////////Next row ///////////////////////////////////
+
+		gc.gridy++;
+
+		gc.weightx = 1;
+		gc.weighty = 0.2;
+
+		gc.gridx = 0;
+		gc.insets = new Insets(0, 0, 0, 5);
+		gc.anchor = GridBagConstraints.FIRST_LINE_END;
+		JButton b9 = new JButton("9");
+		b9.addActionListener(sPanel.new NumActionListener());
+		add(b9, gc);
+		
+		
+		
+		// //////////Next row ///////////////////////////////////
+
+		gc.gridy++;
+
+		gc.weightx = 1;
+		gc.weighty = 0.2;
+
+		gc.gridx = 0;
+		gc.insets = new Insets(0, 0, 0, 5);
+		gc.anchor = GridBagConstraints.FIRST_LINE_END;
+		
+
+
+
+					
 		add(buttonSelectionPanel);
+		
+	
 			
 	}
 	

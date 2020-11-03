@@ -4,31 +4,166 @@ import static problemdomain.SudokuGame.GRID_BOUNDARY;
 
 import problemdomain.Coordinates;
 
-/**
- * Note: Algorithm based on "Simple Solving Algorithm" from the link below. I will look at more complex and efficient
- * algorithms in the future, they key with this algo is that it will tell me if the puzzle is solveable.
- * <p>
- * <p>
- * http://pi.math.cornell.edu/~mec/Summer2009/meerkamp/Site/Solving_any_Sudoku_I.html
- */
-public class SudokuSolver {
 
-    /**
-     * 1.Enumerate all empty cells in typewriter order (left to right, top to bottom)
-     * <p>
-     * 2.Our “current cell” is the first cell in the enumeration.
-     * <p>
-     * 3.Enter a 1 into the current cell. If this violates the Sudoku condition, try entering a 2, then a 3, and so forth, until
-     * a. the entry does not violate the Sudoku condition, or until
-     * b. you have reached 9 and still violate the Sudoku condition.
-     * <p>
-     * <p>
-     * 4.In case a: if the current cell was the last enumerated one, then the puzzle is solved.
-     * If not, then go back to step 2 with the “current cell” being the next cell.
-     * In case b: if the current cell is the first cell in the enumeration, then the Sudoku puzzle does not have a solution.
-     * If not, then erase the 9 from the corrent cell, call the previous cell in the enumeration the new “current cell”, and
-     * continue with step 3.
-     */
+public class SudokuSolver {
+	
+	
+	static int rows = 9; // nombre de lignes dans la grille
+	static int columns = rows; // nombre de colonnes dans la grille
+	static int cells = 9; // taille tableau de cellule
+	
+	static boolean finish = false; // détermine si le sudoku est terminé
+	static int posRows = 0; // position courant de la ligne
+	static int posColumns = 0; // position courant de la colonne
+	static int nbTour = 0;
+	static int nbOccurence = 0; // détermine le nb d'occurence dans ligne/colonne/carré
+	
+	static int[][][] matrice; // représentation de la grille de sudoku
+	
+	
+	public void display(int[][][] board) {
+		for (int j = 0 ; j < 9 ; j++) {
+			System.out.println("R" + j);
+			for (int i = 0 ; i < 9 ; i++) {
+				System.out.print("C" + i + "-> ");
+				for (int x = 0 ; x < 9 ; x++) {
+					System.out.print(" | ");
+					System.out.print(board[j][i][x]);
+				}
+				System.out.println();
+			}
+			System.out.println();
+		}
+	}
+	
+	
+	// permet de compter le nombre de cellule trouvé
+		public static int CompterCelluleTrouve() {
+			int compteurFinal = 0;
+			for (int r = 0 ; r < rows ; r++) {
+				for (int c = 0 ; c < columns ; c++) {
+					if (CompterCellule(r,c) == 1 ) {compteurFinal += 1;} 
+				}
+			}	
+			return compteurFinal;
+		}
+		
+		// permet de compter les valeurs <> 0 dans la cellule
+		public static int CompterCellule(int r , int c) {
+			int countCell = 0;
+			for (int i = 0 ; i < cells ; i++) {
+				if (matrice[r][c][i] != 0) { countCell++;}
+			}
+			return countCell;
+		}
+		
+		// permet de récuperer la valeur dans la cellule
+			public static int ValeurCellule(int r , int c) {
+				int valueCell = 0;
+				for (int i = 0 ; i < cells ; i++) {
+					if (matrice[r][c][i] != 0) { valueCell = matrice[r][c][i];}
+				}
+				return valueCell;
+			}
+		
+		// crée la grille de Sudoku initial (cellule remplie de 1 à 9)
+		public static void GenererMatrice() {
+			for (int r = 0 ; r < rows ; r++ ) {
+				for (int c = 0 ; c < columns ; c++) {
+					if (CompterCellule(r,c) == 0) {matrice[r][c] = new int[]{1,2,3,4,5,6,7,8,9};}
+				}
+			}
+		}
+		
+		public static void ResoudreLigne() {
+			for (int c = 0 ; c < columns ; c++ ) { // se déplace sur les colonnes de la ligne
+				if (CompterCellule(posRows,c) != 1) { // la cellule est à résoudre
+					for (int c1 = 0 ; c1 < columns ; c1++) { // on boucle sur les colonnes pour vérifier si il existes des valeurs uniques
+						if (c1 != c) { // on ne prend pas en compte la cellule dans laquel nous sommes
+							if (CompterCellule(posRows,c1) == 1) { // celulle à valeur définitive
+								matrice[posRows][c][ValeurCellule(posRows,c1)-1] = 0;
+							} 
+						}
+					}
+				}
+			}
+		}
+		
+		public static void ResoudreColonne() {
+			for (int r = 0 ; r < rows ; r++ ) { // se déplace sur les lignes de la colonne
+				if (CompterCellule(r,posColumns) != 1) { // la cellule est à résoudre
+					for (int r1 = 0 ; r1 < rows ; r1++) { // on boucle sur les colonnes pour vérifier si il existes des valeurs uniques
+						if (r1 != r) { // on ne prend pas en compte la cellule dans laquel nous sommes
+							if (CompterCellule(r1,posColumns) == 1) { // celulle à valeur définitive
+								matrice[r][posColumns][ValeurCellule(r1,posColumns)-1] = 0;
+							} 
+						}
+					}
+				}
+			}
+		}
+		
+		public static void ResoudreCarre() {
+			for (int r = posRows ; r < posRows + 3 ; r++) {	
+				for (int c = posColumns ; c < posColumns + 3 ; c++ ) {
+					if (CompterCellule(r,c) != 1) {
+						for (int c1 = posColumns ; c1 < posColumns + 3 ; c1++) {
+							for (int r1 = posRows ; r1 < posRows + 3 ; r1++) {
+								if (c1 != c || r1 != r) {
+									if (CompterCellule(r1,c1) == 1) {
+										matrice[r][c][ValeurCellule(r1,c1)-1] = 0;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		public int[][][] resolve(int[][][] new_tab) {
+			
+			matrice = new_tab;
+			GenererMatrice();
+			
+			while (!finish) {
+				
+				// résolution de tous les carrés par methode ResoudreCarre
+				posRows = 0;
+				for (int x = 0 ; x < 3 ; x++) {
+					posColumns = 0;
+					for (int y = 0 ; y < 3 ; y++) {
+						ResoudreCarre();
+						posColumns += 3;
+					}
+					posRows += 3;
+				}
+				
+				// résolution de toutes les lignes par methode ResoudreLigne
+				posRows = 0;
+				posColumns = 0;
+				for (int x = 0 ; x < rows ; x++) {
+					ResoudreLigne();
+					posRows += 1;
+				}
+
+				// résolution de toutes les colonnes par methode ResoudreColonne
+				posRows = 0;
+				posColumns = 0;
+				for (int x = 0 ; x < columns ; x++) {
+					ResoudreColonne();
+					posColumns += 1;
+				}
+				
+				nbTour += 1;
+				if (CompterCelluleTrouve() == 81) {finish = true;}
+				if (nbTour == 20) {break;}
+				
+			}		
+			return new_tab;
+		}
+
+
     public static boolean puzzleIsSolvable(int[][] puzzle) {
 
         //step 1:
@@ -98,6 +233,10 @@ public class SudokuSolver {
         }
         return emptyCells;
     }
+    
+    
+    
+    
 
 
 }

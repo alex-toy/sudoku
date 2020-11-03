@@ -41,6 +41,7 @@ import javax.swing.event.ListSelectionListener;
 
 import controller.Controller;
 import gui.SudokuPanel.NumActionListener;
+import services.computationlogic.SudokuSolver;
 
 public class MainFrame extends JFrame {
 	
@@ -63,6 +64,11 @@ public class MainFrame extends JFrame {
 	//private SudokuGrid sudokuGrid;
 	private JPanel buttonSelectionPanel;
 	private SudokuPanel sPanel;
+	
+	private PrefsDialog anwers;
+	
+	
+	private JButton oKBtn;
 	
 	
 	public MainFrame() {
@@ -312,6 +318,7 @@ public class MainFrame extends JFrame {
 			}
 		});
 		add(formPanel, BorderLayout.WEST);
+	
 		
 	}
 	
@@ -382,13 +389,19 @@ public class MainFrame extends JFrame {
 		
 		sPanel.setFontSize(26);
 		
-		for(String value : sPanel.getPuzzle().getValidValues()) {
-			System.out.println(value);
-			JButton b = new JButton(value);
-			b.setPreferredSize(new Dimension(40,40));
-			b.addActionListener(sPanel.new NumActionListener());
-			buttonSelectionPanel.add(b);
-		}
+		
+		oKBtn = new JButton("Resolve");
+		oKBtn.setMnemonic(KeyEvent.VK_R);
+		oKBtn.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				SudokuSolver slv = new SudokuSolver();
+				 int[][][] matrice = slv.resolve(board);
+				 slv.display(matrice);
+				 String name = JOptionPane.showInputDialog(sPanel,  "What is your name?", null);
+				 System.out.println("resolved");
+			}
+		});
+		add(oKBtn, BorderLayout.EAST);
 		
 		
 	}
