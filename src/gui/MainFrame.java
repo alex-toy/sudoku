@@ -70,7 +70,7 @@ public class MainFrame extends JFrame {
 	private PrefsDialog anwers;
 	
 	
-	private JButton oKBtn;
+	private JButton ResBtn;
 	
 	
 	public MainFrame() {
@@ -392,20 +392,17 @@ public class MainFrame extends JFrame {
 		sPanel.setFontSize(26);
 		
 		
-		oKBtn = new JButton("Resolve");
-		oKBtn.setMnemonic(KeyEvent.VK_R);
-		oKBtn.addActionListener(new ActionListener(){
+		ResBtn = new JButton("Resolve");
+		ResBtn.setMnemonic(KeyEvent.VK_R);
+		ResBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
 				SudokuSolver slv = new SudokuSolver(board);
 				boolean is_solved = slv.resolve();
 				System.out.println(is_solved);
-				if(is_solved) {
-					slv.display();
-				}
 				slv.display();
 			}
 		});
-		add(oKBtn, BorderLayout.EAST);
+		add(ResBtn, BorderLayout.EAST);
 		
 		
 	}

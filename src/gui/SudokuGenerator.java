@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import constants.Dimensions;
+
 public class SudokuGenerator {
 
 	public SudokuPuzzle generateRandomSudoku(SudokuPuzzleType puzzleType) {
@@ -23,7 +25,8 @@ public class SudokuGenerator {
 		//Bottleneck here need to improve this so that way 16x16 puzzles can be generated
 		backtrackSudokuSolver(0, 0, copy);
 		
-		int numberOfValuesToKeep = (int)(0.22222*(copy.getNumRows()*copy.getNumRows()));
+		//int numberOfValuesToKeep = (int)(0.22222*(copy.getNumRows()*copy.getNumRows()));
+		int numberOfValuesToKeep = Dimensions.NB_NUMBER_IN_INITIAL_GRIG;
 		
 		for(int i = 0;i < numberOfValuesToKeep;) {
 			int randomRow = randomGenerator.nextInt(puzzle.getNumRows());

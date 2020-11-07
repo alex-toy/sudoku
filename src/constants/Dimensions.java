@@ -12,6 +12,8 @@ public class Dimensions {
 	  public static final double WINDOW_X = TOTAL_SIZE + 100;
 	  
 	  public static final double BOARD_PADDING = Math.round(50/64.0 * CHECKBOX_WIDTH);
-	  public static final double XANDY = Math.round(114/64.0 * CHECKBOX_WIDTH); 
+	  public static final double XANDY = Math.round(114/64.0 * CHECKBOX_WIDTH);
+	  
+	  public static final int NB_NUMBER_IN_INITIAL_GRIG = 60;
 	  
 	}
