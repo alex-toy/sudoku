@@ -17,6 +17,7 @@ public class SudokuSolver {
 	static int posColumns = 0; // position courant de la colonne
 	static int nbTour = 0;
 	static int nbOccurence = 0; // détermine le nb d'occurence dans ligne/colonne/carré
+	private int max_it;
 	
 	private int[][][] matrice; // représentation de la grille de sudoku
 	
@@ -27,6 +28,7 @@ public class SudokuSolver {
 	public SudokuSolver(int[][][] matrice) {
 		super();
 		this.matrice = matrice;
+		this.max_it = 1000000;
 	}
 
 	public void display() {
@@ -160,7 +162,7 @@ public class SudokuSolver {
 				
 				nbTour += 1;
 				if (CompterCelluleTrouve() == 81) {finish = true;}
-				if (nbTour == 20) {break;}
+				if (nbTour == max_it) {break;}
 				
 			}		
 			return finish;
