@@ -394,11 +394,14 @@ public class MainFrame extends JFrame {
 		oKBtn.setMnemonic(KeyEvent.VK_R);
 		oKBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				SudokuSolver slv = new SudokuSolver();
-				 int[][][] matrice = slv.resolve(board);
-				 slv.display(matrice);
-				 String name = JOptionPane.showInputDialog(sPanel,  "What is your name?", null);
-				 System.out.println("resolved");
+				SudokuSolver slv = new SudokuSolver(board);
+				boolean is_solved = slv.resolve();
+				System.out.println(is_solved);
+				if(is_solved) {
+					slv.display();
+				}
+				slv.display();
+				String name = JOptionPane.showInputDialog(sPanel,  "What is your name?", null);
 			}
 		});
 		add(oKBtn, BorderLayout.EAST);

@@ -18,21 +18,23 @@ public class SudokuSolver {
 	static int nbTour = 0;
 	static int nbOccurence = 0; // détermine le nb d'occurence dans ligne/colonne/carré
 	
-	static int[][][] matrice; // représentation de la grille de sudoku
+	private int[][][] matrice; // représentation de la grille de sudoku
 	
-	static int[][][] mat_sol;
+	public int[][][] Get_matrice() {
+		return matrice;
+	}
 	
-	
-	public void display(int[][][] board) {
+	public SudokuSolver(int[][][] matrice) {
+		super();
+		this.matrice = matrice;
+	}
+
+	public void display() {
 		for (int j = 0 ; j < 9 ; j++) {
-			System.out.println("R" + j);
 			for (int i = 0 ; i < 9 ; i++) {
-				System.out.print("C" + i + "-> ");
-				for (int x = 0 ; x < 9 ; x++) {
 					System.out.print(" | ");
-					System.out.print(board[j][i][x]);
-				}
-				System.out.println();
+					if (CompterCellule(j,i) == 1) {System.out.print(ValeurCellule(j,i));}
+					else {System.out.print(" ");}
 			}
 			System.out.println();
 		}
@@ -40,7 +42,7 @@ public class SudokuSolver {
 	
 	
 	// permet de compter le nombre de cellule trouvé
-		public static int CompterCelluleTrouve() {
+		public int CompterCelluleTrouve() {
 			int compteurFinal = 0;
 			for (int r = 0 ; r < rows ; r++) {
 				for (int c = 0 ; c < columns ; c++) {
@@ -51,7 +53,7 @@ public class SudokuSolver {
 		}
 		
 		// permet de compter les valeurs <> 0 dans la cellule
-		public static int CompterCellule(int r , int c) {
+		public int CompterCellule(int r , int c) {
 			int countCell = 0;
 			for (int i = 0 ; i < cells ; i++) {
 				if (matrice[r][c][i] != 0) { countCell++;}
@@ -60,7 +62,7 @@ public class SudokuSolver {
 		}
 		
 		// permet de récuperer la valeur dans la cellule
-			public static int ValeurCellule(int r , int c) {
+			public int ValeurCellule(int r , int c) {
 				int valueCell = 0;
 				for (int i = 0 ; i < cells ; i++) {
 					if (matrice[r][c][i] != 0) { valueCell = matrice[r][c][i];}
@@ -69,7 +71,7 @@ public class SudokuSolver {
 			}
 		
 		// crée la grille de Sudoku initial (cellule remplie de 1 à 9)
-		public static void GenererMatrice() {
+		public void GenererMatrice() {
 			for (int r = 0 ; r < rows ; r++ ) {
 				for (int c = 0 ; c < columns ; c++) {
 					if (CompterCellule(r,c) == 0) {matrice[r][c] = new int[]{1,2,3,4,5,6,7,8,9};}
@@ -77,7 +79,7 @@ public class SudokuSolver {
 			}
 		}
 		
-		public static void ResoudreLigne() {
+		public void ResoudreLigne() {
 			for (int c = 0 ; c < columns ; c++ ) { // se déplace sur les colonnes de la ligne
 				if (CompterCellule(posRows,c) != 1) { // la cellule est à résoudre
 					for (int c1 = 0 ; c1 < columns ; c1++) { // on boucle sur les colonnes pour vérifier si il existes des valeurs uniques
@@ -91,7 +93,7 @@ public class SudokuSolver {
 			}
 		}
 		
-		public static void ResoudreColonne() {
+		public void ResoudreColonne() {
 			for (int r = 0 ; r < rows ; r++ ) { // se déplace sur les lignes de la colonne
 				if (CompterCellule(r,posColumns) != 1) { // la cellule est à résoudre
 					for (int r1 = 0 ; r1 < rows ; r1++) { // on boucle sur les colonnes pour vérifier si il existes des valeurs uniques
@@ -105,7 +107,7 @@ public class SudokuSolver {
 			}
 		}
 		
-		public static void ResoudreCarre() {
+		public void ResoudreCarre() {
 			for (int r = posRows ; r < posRows + 3 ; r++) {	
 				for (int c = posColumns ; c < posColumns + 3 ; c++ ) {
 					if (CompterCellule(r,c) != 1) {
@@ -123,9 +125,8 @@ public class SudokuSolver {
 			}
 		}
 		
-		public int[][][] resolve(int[][][] new_tab) {
+		public boolean resolve() {
 			
-			matrice = new_tab;
 			GenererMatrice();
 			
 			while (!finish) {
@@ -162,7 +163,7 @@ public class SudokuSolver {
 				if (nbTour == 20) {break;}
 				
 			}		
-			return new_tab;
+			return finish;
 		}
 
 
@@ -171,8 +172,6 @@ public class SudokuSolver {
         //step 1:
         Coordinates[] emptyCells = typeWriterEnumerate(puzzle);
 
-        //I would like to stress that using lots of nested loops is only appropriate if you are certain that
-        //the size of input O(n) is small.
         int index = 0;
         int input = 1;
         while (index < 10) {
@@ -212,15 +211,11 @@ public class SudokuSolver {
     }
 
     /**
-     * Enumerate all empty cells in typewriter order (left to right, top to bottom)
-     * <p>
-     * 1. Traverse x from from 0-8 for each y, from 0-8, adding to a 1 dimensional array.
-     * <p>
-     * NOTE: Assume that the maximum number of empty cells is 40, as per GameGenerator
      *
      * @param puzzle
      * @return
      */
+		
     private static Coordinates[] typeWriterEnumerate(int[][] puzzle) {
         Coordinates[] emptyCells = new Coordinates[40];
         int iterator = 0;
@@ -235,10 +230,4 @@ public class SudokuSolver {
         }
         return emptyCells;
     }
-    
-    
-    
-    
-
-
 }
