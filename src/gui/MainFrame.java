@@ -133,7 +133,7 @@ public class MainFrame extends JFrame {
 		
 		JMenuItem importDataItem = new JMenuItem("Import Data...");
 		fileChooser = new JFileChooser();
-		fileChooser.addChoosableFileFilter(new PersonFileFilter());
+		//fileChooser.addChoosableFileFilter(new PersonFileFilter());
 		importDataItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, ActionEvent.CTRL_MASK));
 		importDataItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {

@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 //import model.AgeCategory;
 import model.Database;
-import model.EmploymentCategory;
+//import model.EmploymentCategory;
 //import model.Genderold;
 //import model.Person;
 
