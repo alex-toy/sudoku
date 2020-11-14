@@ -23,12 +23,12 @@ import com.mysql.jdbc.Statement;
 public class Database {
 	
 	private Connection con;
-	private List<Person> people;
+	//private List<Person> people;
 	
 	
 	public Database() {
 		super();
-		this.people = new ArrayList<Person>();
+		//this.people = new ArrayList<Person>();
 	}
 	
 	
@@ -68,57 +68,11 @@ public class Database {
 		String updateSql = "update people set name=?, age=?, employment_status=?, tax_id=?, us_citizen=?, gender=?, occupation=? where id=?";
 		PreparedStatement updateStatement = con.prepareStatement(updateSql);
 		
-		for(Person person : people) {
-			int id = person.getId();
-			String name = person.getName();
-			String occupation = person.getOccupation();
-			AgeCategory age = person.getAgeCategory();
-			EmploymentCategory emp = person.getEmpCat();
-			String tax = person.getTaxId();
-			boolean isUs = person.isUsCitizen();
-			Gender gender = person.getGender();
-			
-			checkstmt.setInt(1, id);
-			ResultSet checkresult = checkstmt.executeQuery();
-			checkresult.next();
-			int count = checkresult.getInt(1);
-			if(count == 0) {
-				System.out.println("inserting people with id " + id);
-				int col = 1;
-				insertStatement.setInt(col++, id);
-				insertStatement.setString(col++, name);
-				insertStatement.setString(col++, age.name());
-				insertStatement.setString(col++, emp.name());
-				insertStatement.setString(col++, tax);
-				insertStatement.setBoolean(col++, isUs);
-				insertStatement.setString(col++, gender.name());
-				insertStatement.setString(col++, occupation);
-				insertStatement.executeUpdate();
-			} else {
-				System.out.println("Updating person with ID " + id);
-				
-				int col = 1;
-				updateStatement.setString(col++, name);
-				updateStatement.setString(col++, age.name());
-				updateStatement.setString(col++, emp.name());
-				updateStatement.setString(col++, tax);
-				updateStatement.setBoolean(col++, isUs);
-				updateStatement.setString(col++, gender.name());
-				updateStatement.setString(col++, occupation);
-				updateStatement.setInt(col++, id);
-				
-				updateStatement.executeUpdate();
-			}
-			System.out.println("count for people with ID " + id + " is " + count);
-		}
-		checkstmt.close();
-		insertStatement.close();
-		updateStatement.close();
 	}
 	
 	
 	public void load() throws SQLException {
-		people.clear();
+		//people.clear();
 		
 		String sql = "select id, name, age, employment_status, tax_id, us_citizen, gender, occupation from people order by name";
 		Statement selectStatement = (Statement) con.createStatement();
@@ -135,8 +89,8 @@ public class Database {
 			String gender = results.getString("gender");
 			String occ = results.getString("occupation");
 			
-			Person person = new Person(id, name, occ, AgeCategory.valueOf(age), EmploymentCategory.valueOf(emp), taxId, isUs, Gender.valueOf(gender));
-			people.add(person);
+			//Person person = new Person(id, name, occ, AgeCategory.valueOf(age), EmploymentCategory.valueOf(emp), taxId, isUs, Genderold.valueOf(gender));
+			//people.add(person);
 		}
 		
 		results.close();
@@ -144,32 +98,11 @@ public class Database {
 	}
 	
 	
-	public void addPerson(Person person) {
-		people.add(person);
-	}
-	
-	
-	public void removePerson(int index) {
-		people.remove(index);
-	}
-	
-	
-	public List<Person> getPeople() {
-		return  people;
-	}
-
-
-	public void setPeople(LinkedList<Person> people) {
-		this.people = people;
-	}
 	
 	
 	public void saveToFile(File file) throws IOException {
 		FileOutputStream fos = new FileOutputStream(file);
 		ObjectOutputStream oos = new ObjectOutputStream(fos);
-		
-		Person[] persons = people.toArray(new Person[people.size()]);
-		oos.writeObject(persons);
 		
 		oos.close();
 	}
@@ -178,15 +111,6 @@ public class Database {
 	public void loadFromFile(File file) throws IOException {
 		FileInputStream fis = new FileInputStream(file);
 		ObjectInputStream ois = new ObjectInputStream(fis);
-		
-		try {
-			Person[] persons = (Person[]) ois.readObject();
-			people.clear();
-			people.addAll(Arrays.asList(persons));
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		
 		
 		ois.close();
 	}

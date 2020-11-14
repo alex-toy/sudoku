@@ -55,20 +55,12 @@ public class MainFrame extends JFrame {
 	private FormPanel formPanel;
 	private JFileChooser fileChooser;
 	private Controller controller;
-	private TablePanel tablePanel;
+	//private TablePanel tablePanel;
 	private PrefsDialog prefsDialog;
 	private Preferences prefs;
 	private JSplitPane splitPane;
-	private JTabbedPane tabPane;
-	private MessagePanel messagePanel;  
-	
-	private SudokuPanel sudokuPanel;
-	//private SudokuGrid sudokuGrid;
 	private JPanel buttonSelectionPanel;
 	private SudokuPanel sPanel;
-	
-	private PrefsDialog anwers;
-	
 	
 	private JButton ResBtn;
 	
@@ -148,7 +140,7 @@ public class MainFrame extends JFrame {
 				if(fileChooser.showOpenDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
 					try {
 						controller.loadFromFile(fileChooser.getSelectedFile());
-						tablePanel.refresh();
+						//tablePanel.refresh();
 					} catch (IOException e) {
 						JOptionPane.showMessageDialog(MainFrame.this, "Could not load data from file", 
 								"error", 
@@ -292,7 +284,7 @@ public class MainFrame extends JFrame {
 				} catch (SQLException e) {
 					JOptionPane.showMessageDialog(MainFrame.this, "Unable to load from database.", "Database Connection Problem", JOptionPane.ERROR_MESSAGE);
 				}
-				tablePanel.refresh();
+				//tablePanel.refresh();
 			}
 		});
 		add(toolbar, BorderLayout.PAGE_START);
@@ -310,19 +302,21 @@ public class MainFrame extends JFrame {
 	
 	
 	
+	
 	private void formularyPanel() {
 		
 		formPanel = new FormPanel(this.sPanel);
 		formPanel.setFormListener(new FormListener() {
 			public void formEventOccured(FormEvent e) {
-				controller.addPerson(e);
-				tablePanel.refresh();
+				//controller.addPerson(e);
+				//tablePanel.refresh();
 			}
 		});
 		add(formPanel, BorderLayout.WEST);
 	
 		
 	}
+	
 	
 	
 
