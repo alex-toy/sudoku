@@ -14,10 +14,10 @@ THANKS:
 eMiage of the Polytech Lyon 1 - M1 Module C306.
 
 INSTALL:
-Find out how to use Sudoku algo by reading the document under the INSTALL Section.
+Find out how to use Sudoku algo by reading the document under the DOCUMENTATION FONCTIONNELLE ET TECHNIQUE Section.
 
 COPYING / LICENSE
-If you want to study or copy the file for distribution, you might contact us at sudokualgo@hotmai.com 
+If you want to study or copy the file for distribution, you might contact us at sudokualgo@hotmail.com 
 
 BUGS: 
 we are sorry for any inconvenience it may cause, and we ask you to report to sudokualgo@hotmail.com
