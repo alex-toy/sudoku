@@ -12,14 +12,14 @@ public class SudokuSolver {
 	static int columns = rows; // nombre de colonnes dans la grille
 	static int cells = 9; // taille tableau de cellule
 	
-	static boolean finish = false; // détermine si le sudoku est terminé
+	static boolean finish = false; // dï¿½termine si le sudoku est terminï¿½
 	static int posRows = 0; // position courant de la ligne
 	static int posColumns = 0; // position courant de la colonne
 	static int nbTour = 0;
-	static int nbOccurence = 0; // détermine le nb d'occurence dans ligne/colonne/carré
+	static int nbOccurence = 0; // dï¿½termine le nb d'occurence dans ligne/colonne/carrï¿½
 	private int max_it;
 	
-	private int[][][] matrice; // représentation de la grille de sudoku
+	private int[][][] matrice; // reprï¿½sentation de la grille de sudoku
 	
 	public int[][][] Get_matrice() {
 		return matrice;
@@ -43,7 +43,7 @@ public class SudokuSolver {
 	}
 	
 	
-	// permet de compter le nombre de cellule trouvé
+	// permet de compter le nombre de cellule trouvï¿½
 		public int CompterCelluleTrouve() {
 			int compteurFinal = 0;
 			for (int r = 0 ; r < rows ; r++) {
@@ -63,7 +63,7 @@ public class SudokuSolver {
 			return countCell;
 		}
 		
-		// permet de récuperer la valeur dans la cellule
+		// permet de rï¿½cuperer la valeur dans la cellule
 			public int ValeurCellule(int r , int c) {
 				int valueCell = 0;
 				for (int i = 0 ; i < cells ; i++) {
@@ -72,7 +72,7 @@ public class SudokuSolver {
 				return valueCell;
 			}
 		
-		// crée la grille de Sudoku initial (cellule remplie de 1 à 9)
+		// crï¿½e la grille de Sudoku initial (cellule remplie de 1 ï¿½ 9)
 		public void GenererMatrice() {
 			for (int r = 0 ; r < rows ; r++ ) {
 				for (int c = 0 ; c < columns ; c++) {
@@ -82,11 +82,11 @@ public class SudokuSolver {
 		}
 		
 		public void ResoudreLigne() {
-			for (int c = 0 ; c < columns ; c++ ) { // se déplace sur les colonnes de la ligne
-				if (CompterCellule(posRows,c) != 1) { // la cellule est à résoudre
-					for (int c1 = 0 ; c1 < columns ; c1++) { // on boucle sur les colonnes pour vérifier si il existes des valeurs uniques
+			for (int c = 0 ; c < columns ; c++ ) { // se dï¿½place sur les colonnes de la ligne
+				if (CompterCellule(posRows,c) != 1) { // la cellule est ï¿½ rï¿½soudre
+					for (int c1 = 0 ; c1 < columns ; c1++) { // on boucle sur les colonnes pour vï¿½rifier si il existes des valeurs uniques
 						if (c1 != c) { // on ne prend pas en compte la cellule dans laquel nous sommes
-							if (CompterCellule(posRows,c1) == 1) { // celulle à valeur définitive
+							if (CompterCellule(posRows,c1) == 1) { // celulle ï¿½ valeur dï¿½finitive
 								matrice[posRows][c][ValeurCellule(posRows,c1)-1] = 0;
 							} 
 						}
@@ -96,11 +96,11 @@ public class SudokuSolver {
 		}
 		
 		public void ResoudreColonne() {
-			for (int r = 0 ; r < rows ; r++ ) { // se déplace sur les lignes de la colonne
-				if (CompterCellule(r,posColumns) != 1) { // la cellule est à résoudre
-					for (int r1 = 0 ; r1 < rows ; r1++) { // on boucle sur les colonnes pour vérifier si il existes des valeurs uniques
+			for (int r = 0 ; r < rows ; r++ ) { // se dï¿½place sur les lignes de la colonne
+				if (CompterCellule(r,posColumns) != 1) { // la cellule est ï¿½ rï¿½soudre
+					for (int r1 = 0 ; r1 < rows ; r1++) { // on boucle sur les colonnes pour vï¿½rifier si il existes des valeurs uniques
 						if (r1 != r) { // on ne prend pas en compte la cellule dans laquel nous sommes
-							if (CompterCellule(r1,posColumns) == 1) { // celulle à valeur définitive
+							if (CompterCellule(r1,posColumns) == 1) { // celulle ï¿½ valeur dï¿½finitive
 								matrice[r][posColumns][ValeurCellule(r1,posColumns)-1] = 0;
 							} 
 						}
@@ -127,13 +127,84 @@ public class SudokuSolver {
 			}
 		}
 		
+		public void TrouveUniqueLigne () {
+			for (int y = 1 ; y <= 9 ; y++) {
+				nbOccurence = 0 ;
+				for (int c = 0 ; c < columns ; c++ ) { // se dÃ©place sur les colonnes de la ligne
+					if (CompterCellule(posRows,c) != 1) { // la cellule est Ã  rÃ©soudre
+						if (matrice[posRows][c][y-1] == y) { 	
+							nbOccurence +=1 ;
+						}
+					}
+				}
+				
+				if (nbOccurence == 1) {
+					for (int c = 0 ; c < columns ; c ++) {
+						if (matrice[posRows][c][y-1] == y) { 
+							matrice[posRows][c] = new int[]{0,0,0,0,0,0,0,0,0};
+							matrice[posRows][c][y-1] = y;
+						} 
+					}
+				}
+			}
+		}	
+		
+		public void TrouveUniqueColonne () {
+			for (int y = 1 ; y <= 9 ; y++) {
+				nbOccurence = 0 ;
+				for (int r = 0 ; r < rows ; r++ ) { // se dÃ©place sur les colonnes de la ligne
+					if (CompterCellule(r,posColumns) != 1) { // la cellule est Ã  rÃ©soudre
+						if (matrice[r][posColumns][y-1] == y) {
+							nbOccurence +=1 ;
+						}
+					}
+				}
+				if (nbOccurence == 1) {
+					for (int r = 0 ; r < rows ; r ++) {
+						if (matrice[r][posColumns][y-1] == y) {
+							matrice[r][posColumns] = new int[]{0,0,0,0,0,0,0,0,0};
+							matrice[r][posColumns][y-1] = y;
+						} 
+					}
+				}
+			}
+		}
+
+		// fonction non-fonctionelle pour le moment // erreur de dÃ©placement et de solvabilitÃ©
+		public void TrouveUniqueCarre () {
+			for (int y = 1 ; y <= 9 ; y++) {
+				nbOccurence = 0;
+				for (int r = posRows ; r < posRows + 3 ; r++) {	
+					for (int c = posColumns ; c < posColumns + 3 ; c++) {
+						if (CompterCellule(r,c) != 1) {
+							if (matrice[r][c][y-1] == y) {
+								nbOccurence +=1 ;
+							} 
+						}
+					}
+				}
+				
+				if (nbOccurence == 1) {
+					for (int r = posRows ; r < posRows + 3 ; r++) {	
+						for (int c = posColumns ; c < posColumns + 3 ; c++ ) {
+							if (matrice[r][c][y-1] == y) {
+								matrice[r][c] = new int[]{0,0,0,0,0,0,0,0,0};
+								matrice[r][c][y-1] = y;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		
 		public boolean resolve() {
 			
 			GenererMatrice();
 			
 			while (!finish) {
 				
-				// résolution de tous les carrés par methode ResoudreCarre
+				// rï¿½solution de tous les carrï¿½s par methode ResoudreCarre
 				posRows = 0;
 				for (int x = 0 ; x < 3 ; x++) {
 					posColumns = 0;
@@ -144,7 +215,7 @@ public class SudokuSolver {
 					posRows += 3;
 				}
 				
-				// résolution de toutes les lignes par methode ResoudreLigne
+				// rï¿½solution de toutes les lignes par methode ResoudreLigne
 				posRows = 0;
 				posColumns = 0;
 				for (int x = 0 ; x < rows ; x++) {
@@ -152,13 +223,39 @@ public class SudokuSolver {
 					posRows += 1;
 				}
 
-				// résolution de toutes les colonnes par methode ResoudreColonne
+				// rï¿½solution de toutes les colonnes par methode ResoudreColonne
 				posRows = 0;
 				posColumns = 0;
 				for (int x = 0 ; x < columns ; x++) {
 					ResoudreColonne();
 					posColumns += 1;
 				}
+				
+				// rï¿½solution de toutes les lignes par methode TrouveUniqueLigne
+				posRows = 0;
+				posColumns = 0;
+				for (int x = 0 ; x < rows ; x++) {
+					TrouveUniqueLigne();
+					posRows += 1;
+				}
+				
+				// rï¿½solution de toutes les colonnes par methode TrouveUniqueColonne
+				posRows = 0;
+				posColumns = 0;
+				for (int x = 0 ; x < columns ; x++) {
+					TrouveUniqueColonne();
+					posColumns += 1;
+				}
+				/*
+				posRows = 0;
+				for (int x = 0 ; x < 3 ; x++) {
+					posColumns = 0;
+					for (int y = 0 ; y < 3 ; y++) {
+						TrouveUniqueCarre();
+						posColumns += 3;
+					}
+					posRows += 3;
+				}*/
 				
 				nbTour += 1;
 				if (CompterCelluleTrouve() == 81) {finish = true;}
@@ -191,3 +288,4 @@ public class SudokuSolver {
         return emptyCells;
     }
 }
+
