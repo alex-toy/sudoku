@@ -10,11 +10,11 @@ public class AlgoSudoku {
 	static boolean finish = false; // détermine si le sudoku est terminé
 	static int posRows = 0; // position courant de la ligne
 	static int posColumns = 0; // position courant de la colonne
-	static int nbTour = 0;
+	public static int nbTour = 0;
 	static int nbOccurence = 0; // détermine le nb d'occurence dans ligne/colonne/carré
 	private static int max_it = 100;
 	
-	static int[][][] matrice; // représentation de la grille de sudoku
+	public static int[][][] matrice; // représentation de la grille de sudoku
 
 	
 	// Affiche le résultat 
