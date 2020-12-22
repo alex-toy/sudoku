@@ -2,11 +2,11 @@ package database;
 
 import java.sql.SQLException;
 
-import model.AgeCategory;
+//import model.AgeCategory;
 import model.Database;
-import model.EmploymentCategory;
-import model.Gender;
-import model.Person;
+//import model.EmploymentCategory;
+//import model.Genderold;
+//import model.Person;
 
 public class TestDatabase {
 
@@ -21,8 +21,8 @@ public class TestDatabase {
 			e.printStackTrace();
 		}
 		
-		db.addPerson(new Person("alex", "MLE", AgeCategory.adult, EmploymentCategory.employed, true, "777", Gender.male));
-		db.addPerson(new Person("anaele", "boss", AgeCategory.senior, EmploymentCategory.employed, true, "777", Gender.female));
+		//db.addPerson(new Person("alex", "MLE", AgeCategory.adult, EmploymentCategory.employed, true, "777", Genderold.male));
+		//db.addPerson(new Person("anaele", "boss", AgeCategory.senior, EmploymentCategory.employed, true, "777", Genderold.female));
 		
 		try {
 			db.save();

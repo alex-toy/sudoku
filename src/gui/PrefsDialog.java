@@ -47,6 +47,11 @@ public class PrefsDialog extends JDialog {
 	}
 	
 	
+	public PrefsDialog(ActionListener actionListener) {
+		// TODO Auto-generated constructor stub
+	}
+
+
 	public void setDefaults(String user, String password, Integer port) {
 		userField.setText(user);
 		passField.setText(password);
